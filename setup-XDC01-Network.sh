@@ -22,4 +22,11 @@ mkdir logs
 echo "[*] Please enter no. of inital nodes you wish to setup (min. 3) :- "
 read numMN
 
+if [[ $numMN > 21 ]]
+then
+    echo "Current Count ${numMN} , MasterNodes Count should not exceed more then 21..!"
+    exit 1
+fi
+
+echo "[*] Creating ${numMN} nodes"
 
