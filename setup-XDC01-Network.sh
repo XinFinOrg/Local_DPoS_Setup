@@ -19,3 +19,7 @@ mkdir $PROJECT_ROOT_DIR
 cd $PROJECT_ROOT_DIR
 mkdir logs
 
+echo "[*] Please enter no. of inital nodes you wish to setup (min. 3) :- "
+read numMN
+
+
