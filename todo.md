@@ -1,0 +1,1 @@
+One click shell to install and configure.
