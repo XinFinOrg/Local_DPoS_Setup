@@ -1,6 +1,6 @@
 #!/bin/bash
 export $(cat .env | xargs)
-
+Bin_NAME=gxdc
 WORK_DIR=$PWD
 PROJECT_DIR="${HOME}/go/src/github.com/ethereum/go-ethereum"
 cd $PROJECT_DIR && make $Bin_NAME

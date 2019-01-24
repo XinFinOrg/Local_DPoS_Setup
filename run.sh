@@ -12,7 +12,7 @@ export $(cat .env | xargs)
 Bin_NAME=gxdc
 
 WORK_DIR=$PWD
-PROJECT_DIR="${HOME}/github/anilchinchawale/XDC-DPoS"
+PROJECT_DIR="${HOME}/go/src/github.com/ethereum/go-ethereum"
 cd $PROJECT_DIR && make gxdc
 cd $WORK_DIR
 
