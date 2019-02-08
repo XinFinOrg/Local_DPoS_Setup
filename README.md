@@ -6,6 +6,13 @@ Here’s how you built a XDC01 blockchain network, in this repository you will g
 #### Prerequisite
 **Operating System**: Ubuntu 16.04 64-bit or higher
 
+**Hardware**:
+
+| Hardware | Minimum | Desired |
+|:------- |:-------- |:---------|
+| **CPU's**: | 2 |  4 |
+| **Memory**: | 4 GB |  16 GB |
+| **Storage**: | 100 GB |  500 GB |
 
 ## Network Ports
 
