@@ -7,3 +7,11 @@ Here’s how you built a XDC01 blockchain network, in this repository you will g
 **Operating System**: Ubuntu 16.04 64-bit or higher
 
 
+
+#### Launch the setup script
+
+    [*] Init XinFin DPoS Network
+
+    [*] Please enter Project/Network name :- XDPoS
+
+    [*] Please enter no. of inital nodes you wish to setup (min. 3) :-
