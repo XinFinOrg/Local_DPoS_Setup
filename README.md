@@ -7,6 +7,16 @@ Here’s how you built a XDC01 blockchain network, in this repository you will g
 **Operating System**: Ubuntu 16.04 64-bit or higher
 
 
+## Network Ports
+
+Following network ports need to be open for the nodes to communicate
+
+| Port | Type | Definition |
+|:------:|:-----:|:---------- |
+|30301-3030*| TCP/UDP | XDC Enode |
+|8545-854*| TCP | RPC |
+|9545-954*| TCP | WebSocket |
+
 
 #### Launch the setup script
 
