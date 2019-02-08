@@ -19,9 +19,9 @@ Bin_NAME=XDC
 rm -rf $PROJECT_ROOT_DIR
 mkdir $PROJECT_ROOT_DIR
 DPOS_GLOBAL_ARGS="--mine --rpc --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,dpos,posv,XDPoS  --rpcaddr 0.0.0.0"
-ENODE_START_PORT=31000
-RPC_START_PORT=32000
-WS_START_PORT=33000
+ENODE_START_PORT=30301
+RPC_START_PORT=8545
+WS_START_PORT=9545
 
 cd $PROJECT_ROOT_DIR
 mkdir logs
