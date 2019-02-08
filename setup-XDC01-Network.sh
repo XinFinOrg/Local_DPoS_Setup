@@ -15,12 +15,24 @@ read project_name
 PROJECT_ROOT_DIR=${project_name}_network
 mypassword=''
 DPOS_CUSTOM_GENESIS_FILE=${project_name}_genesis.json
+Bin_NAME=XDC
 rm -rf $PROJECT_ROOT_DIR
 mkdir $PROJECT_ROOT_DIR
+DPOS_GLOBAL_ARGS="--mine --rpc --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,dpos,posv,XDPoS  --rpcaddr 0.0.0.0"
+ENODE_START_PORT=31000
+RPC_START_PORT=32000
+WS_START_PORT=33000
+
 cd $PROJECT_ROOT_DIR
 mkdir logs
-killall geth
+killall $Bin_NAME
 touch .pwd
+
+
+WORK_DIR=$PWD
+PROJECT_DIR="${HOME}/github/xinFinOrg/XDPoS-TestNet-Apothem"
+cd $PROJECT_DIR && make all
+cd $WORK_DIR
 
 
 echo "[*] Please enter no. of inital nodes you wish to setup (min. 3) :- "
@@ -36,8 +48,8 @@ echo "[*] Creating Accounts for ${numMN} nodes"
 
 for ((i= 1;i<= $numMN;i++)){
     echo $i
-    geth --datadir nodes/node_$i account new --password <(echo $mypassword)
-    ACCOUNTS[$i]=`geth account list --keystore nodes/node_$i/keystore | sed 's/^[^{]*{\([^{}]*\)}.*/\1/'`
+    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i account new --password <(echo $mypassword)
+    ACCOUNTS[$i]=`${PROJECT_DIR}/build/bin/$Bin_NAME account list --keystore nodes/node_$i/keystore | sed 's/^[^{]*{\([^{}]*\)}.*/\1/'`
     echo "[*] New account = ${ACCOUNTS[$i]}"
 }
 
@@ -77,19 +89,16 @@ DPoS_PUPPETH_ARGS+="2\n2\n$DPOS_CUSTOM_GENESIS_FILE\n"
 
 echo "[*] PUPPETH_ARG = $DPoS_PUPPETH_ARGS"
 
-printf $DPoS_PUPPETH_ARGS | puppeth &> logs/puppeth_output.log
+printf $DPoS_PUPPETH_ARGS | ${PROJECT_DIR}/build/bin/puppeth &> logs/puppeth_output.log
 
-DPOS_GLOBAL_ARGS="--mine --rpc --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,quorum,istanbul,dpos,posv  --rpcaddr 0.0.0.0"
-ENODE_START_PORT=31000
-RPC_START_PORT=32000
-WS_START_PORT=33000
+
 
 # INIT GENESIS 
 for (( i = 1;i<=$numMN;i++)){
     echo "[*] Init Node $i"
-    geth --datadir nodes/node_$i init $DPOS_CUSTOM_GENESIS_FILE $>> logs/node_$i.log
+    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i init $DPOS_CUSTOM_GENESIS_FILE $>> logs/node_$i.log
     echo "[*] Start Nodes $i"
-    geth --datadir nodes/node_$i $DPOS_GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password ./.pwd \
+    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i $DPOS_GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password ./.pwd \
                                       --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($ENODE_START_PORT + $i - 1)) --wsport $(($WS_START_PORT + $i - 1)) &>> logs/node_$i.log & 
  
     
@@ -98,7 +107,7 @@ echo "[*] Setting up network, please wait ..."
 sleep 10
 
 for ((i=1;i<=$numMN;i++)){
-    if [ ! -e "nodes/node_$i/geth.ipc" ]; then
+    if [ ! -e "nodes/node_$i/$Bin_NAME.ipc" ]; then
     sleep 2
     fi
 }
@@ -107,22 +116,22 @@ for ((i=1;i<=$numMN;i++)){
 ENODES_FILE=enodes_list.txt
 rm -rf $ENODES_FILE
 for ((i = 1; i <= $numMN; i++)) {
-  if [ -e "nodes/node_$i/geth.ipc" ]; then
+  if [ -e "nodes/node_$i/$Bin_NAME.ipc" ]; then
     echo "[*] Directory found for node $i"
-    geth --exec 'admin.nodeInfo.enode' attach nodes/node_$i/geth.ipc >> $ENODES_FILE 
+    ${PROJECT_DIR}/build/bin/$Bin_NAME --exec 'admin.nodeInfo.enode' attach nodes/node_$i/$Bin_NAME.ipc >> $ENODES_FILE 
   else "[*] Please check node $i, there is something wrong with it"
   fi
 }
 
 #ADD PEERS
 for ((i = 1; i <= $numMN; i++)) {
- if [ -e "nodes/node_$i/geth.ipc" ]; then
+ if [ -e "nodes/node_$i/$Bin_NAME.ipc" ]; then
   echo "[*] Add peers for node $i"
-  OWNED_ENODE=`geth --exec 'admin.nodeInfo.enode' attach nodes/node_$i/geth.ipc`
+  OWNED_ENODE=`${PROJECT_DIR}/build/bin/$Bin_NAME --exec 'admin.nodeInfo.enode' attach nodes/node_$i/$Bin_NAME.ipc`
   #echo "Owned enode = $OWNED_ENODE"
   while read line; do
     if [ $OWNED_ENODE != $line ]; then
-      geth --exec "admin.addPeer($line)" attach nodes/node_$i/geth.ipc >> "nodes_add_res.txt" 
+      ${PROJECT_DIR}/build/bin/$Bin_NAME --exec "admin.addPeer($line)" attach nodes/node_$i/$Bin_NAME.ipc >> "nodes_add_res.txt" 
     fi
   done < $ENODES_FILE
  fi
