@@ -27,8 +27,9 @@ Following network ports need to be open for the nodes to communicate
 
 #### Launch the setup script
 
-    [*] Init XinFin DPoS Network
+        bash run.sh
 
-    [*] Please enter Project/Network name :- XDPoS
+#### Delete Old Data
 
-    [*] Please enter no. of inital nodes you wish to setup (min. 3) :-
+        bash reset.sh
+
