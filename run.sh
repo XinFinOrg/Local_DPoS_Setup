@@ -34,7 +34,7 @@ VERBOSITY=3
 GASPRICE="1"
 
 echo Starting the bootnode ...
-${PROJECT_DIR}/build/bin/bootnode -nodekey ./bootnode.key &
+${PROJECT_DIR}/build/bin/bootnode -nodekey ./bootnode.key --addr 0.0.0.0:30301 &
 child_proc=$! 
 
 echo Starting the nodes ...
