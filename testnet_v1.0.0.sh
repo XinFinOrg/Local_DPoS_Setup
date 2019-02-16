@@ -2,7 +2,7 @@
 export $(cat .env | xargs)
 Bin_NAME=XDC
 WORK_DIR=$PWD
-PROJECT_DIR="/home/xinfin/github/xinFinOrg/XDPoS-TestNet-Apothem"
+PROJECT_DIR="/root/XinFin/XDPoS-TestNet-Apothem"
 cd $PROJECT_DIR && make $Bin_NAME
 cd $WORK_DIR
 
