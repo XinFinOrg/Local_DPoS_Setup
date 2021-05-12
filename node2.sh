@@ -8,7 +8,8 @@ _interupt() {
 trap _interupt INT TERM
 
 touch .pwd
-export $(cat .env | xargs)
+# export $(cat .env | xargs)
+source .env
 Bin_NAME=XDC
 echo "PRIVATE_KEY_2: $PRIVATE_KEY_2"
 WORK_DIR=$PWD
