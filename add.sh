@@ -1,5 +1,7 @@
 #!/bin/bash
-export $(cat .env | xargs)
+#export $(cat .env | xargs)
+source .env
+echo "PRIVATE_KEY_2: $PRIVATE_KEY_2"
 Bin_NAME=XDC
 WORK_DIR=$PWD
 PROJECT_DIR="/home/xinfin/github/xinFinOrg/XDPoS-TestNet-Apothem"

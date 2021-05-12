@@ -12,7 +12,7 @@ export $(cat .env | xargs)
 Bin_NAME=XDC
 
 WORK_DIR=$PWD
-PROJECT_DIR="/home/xinfin/github/xinFinOrg/XDPoS-TestNet-Apothem"
+PROJECT_DIR="/Users/laili/work/git/go/src/github.com/ethereum/go-ethereum"
 cd $PROJECT_DIR && make all
 cd $WORK_DIR
 
