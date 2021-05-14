@@ -20,6 +20,7 @@ cd $WORK_DIR
 mkdir -p keys
 numMN=4
 
+<<<<<<< HEAD
 for ((i= 1;i<= $numMN;i++)){
   echo $i
   if [ ! -d ./nodes/$i/$Bin_NAME/chaindata ]
@@ -34,7 +35,26 @@ for ((i= 1;i<= $numMN;i++)){
 
   echo "[*] wallet $i = ${wallet[$i]}" 
 }
+=======
+if [ ! -d ./nodes/1/$Bin_NAME/chaindata ]
+then
+  echo $PRIVATE_KEY_1 > PRIVATE_KEY_1.txt
+  echo $PRIVATE_KEY_2 > PRIVATE_KEY_2.txt
+  echo $PRIVATE_KEY_3 > PRIVATE_KEY_3.txt
+  wallet1=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/1 ./PRIVATE_KEY_1.txt | awk -v FS="({|})" '{print $2}')
+  wallet2=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/2 ./PRIVATE_KEY_2.txt | awk -v FS="({|})" '{print $2}')
+  wallet3=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/3 ./PRIVATE_KEY_3.txt | awk -v FS="({|})" '{print $2}')
+  ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir ./nodes/1 init ./genesis/genesis.json
+  ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir ./nodes/2 init ./genesis/genesis.json
+  ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir ./nodes/3 init ./genesis/genesis.json
+else
+  wallet1=$(${PROJECT_DIR}/build/bin/$Bin_NAME account list --datadir ./nodes/1 | head -n 1 | awk -v FS="({|})" '{print $2}')
+  wallet2=$(${PROJECT_DIR}/build/bin/$Bin_NAME account list --datadir ./nodes/2 | head -n 1 | awk -v FS="({|})" '{print $2}')
+  wallet3=$(${PROJECT_DIR}/build/bin/$Bin_NAME account list --datadir ./nodes/3 | head -n 1 | awk -v FS="({|})" '{print $2}')
+fi
+>>>>>>> master
 
+echo $wallet1
 VERBOSITY=3
 GASPRICE="1"
 
@@ -44,6 +64,10 @@ GASPRICE="1"
 #child_proc=$! 
 
 echo Starting the nodes ...
+<<<<<<< HEAD
+=======
+numMN=3
+>>>>>>> master
 for ((i= 1;i<= $numMN;i++)){
   echo $i
   ${PROJECT_DIR}/build/bin/$Bin_NAME \
@@ -56,7 +80,11 @@ for ((i= 1;i<= $numMN;i++)){
     --rpccorsdomain "*" \
     --ws --wsaddr="0.0.0.0" \--wsorigins "*" --wsport $((8554+$i)) \
     --rpcaddr 0.0.0.0 --rpcport $((8544+$i)) --rpcvhosts "*" \
+<<<<<<< HEAD
     --unlock ${wallet[$i]} \
+=======
+    --unlock $((wallet$i)) \
+>>>>>>> master
     --password ./.pwd \
     --mine \
     --gasprice "${GASPRICE}" \
