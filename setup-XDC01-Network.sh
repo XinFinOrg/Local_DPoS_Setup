@@ -1,8 +1,9 @@
-#!/bin/bash
+#!/bin/sh -x
 
 # Auther :- Anil Chinchawale
 # AutherEmailID :- anil@xinfin.org
 # Setup XDC Network blockchain with single script
+source .env
 
 echo "[*] Init XinFin XDC Network"
 
@@ -14,7 +15,7 @@ read project_name
 
 PROJECT_ROOT_DIR=${project_name}_network
 mypassword=''
-DPOS_CUSTOM_GENESIS_FILE=${project_name}_genesis.json
+DPOS_CUSTOM_GENESIS_FILE=../genesis/genesis.json
 Bin_NAME=XDC
 rm -rf $PROJECT_ROOT_DIR
 mkdir $PROJECT_ROOT_DIR
@@ -30,7 +31,7 @@ touch .pwd
 
 
 WORK_DIR=$PWD
-PROJECT_DIR="${HOME}/github/xinFinOrg/XDPoS-TestNet-Apothem"
+#PROJECT_DIR="${HOME}/github/xinFinOrg/XDPoS-TestNet-Apothem"
 cd $PROJECT_DIR && make all
 cd $WORK_DIR
 
@@ -48,8 +49,9 @@ echo "[*] Creating Accounts for ${numMN} nodes"
 
 for ((i= 1;i<= $numMN;i++)){
     echo $i
-    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i account new --password <(echo $mypassword)
-    ACCOUNTS[$i]=`${PROJECT_DIR}/build/bin/$Bin_NAME account list --keystore nodes/node_$i/keystore | sed 's/^[^{]*{\([^{}]*\)}.*/\1/'`
+    ACCOUNTS[$i]=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/$i <(echo ${PRIVATE_KEY_1}) | awk -v FS="({|})" '{print $2}') | sed 's/^xdc//g'
+    #${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i account new --password <(echo $mypassword)
+    #ACCOUNTS[$i]=`${PROJECT_DIR}/build/bin/$Bin_NAME account list --keystore nodes/node_$i/keystore | sed 's/^[^{]*{\([^{}]*\)}.*/\1/'`
     echo "[*] New account = ${ACCOUNTS[$i]}"
 }
 
@@ -98,10 +100,7 @@ for (( i = 1;i<=$numMN;i++)){
     echo "[*] Init Node $i"
     ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i init $DPOS_CUSTOM_GENESIS_FILE $>> logs/node_$i.log
     echo "[*] Start Nodes $i"
-    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i $DPOS_GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password ./.pwd \
-                                      --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($ENODE_START_PORT + $i - 1)) --wsport $(($WS_START_PORT + $i - 1)) &>> logs/node_$i.log & 
- 
-    
+    ${PROJECT_DIR}/build/bin/$Bin_NAME --datadir nodes/node_$i $DPOS_GLOBAL_ARGS  --unlock ${ACCOUNTS[$i]} --password ./.pwd --rpcport $(($RPC_START_PORT + $i - 2)) --port $(($ENODE_START_PORT + $i - 1)) --wsport $(($WS_START_PORT + $i - 1)) >> logs/node_$i.log &
 }
 echo "[*] Setting up network, please wait ..."
 sleep 10

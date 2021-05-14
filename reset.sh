@@ -1,5 +1,4 @@
 #!/bin/bash
-rm -rf ./nodes/1
-rm -rf ./nodes/2
-rm -rf ./nodes/3
-rm -rf ./nodes/4
+rm -rf ./nodes
+rm -rf ./logs/*
+for i in `ps aux |grep XDC | awk -v FS=" " '{print $2}' `; do kill -9 $i || true; done 
