@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  master-node-1:
+    image: ${DOCKER_HUB}:${DOCKER_TAG} # Use environment variable set by bash script during deployment
+    volumes:
+      - ${PWD}/nodes:/XDCchain/nodes # Temporary location for the XDC to read nodes data from
+      - ${PWD}/devnet:/XDCchain/devnet
+      - ${PWD}/genesis:/XDCchain/genesis
+    environment:
+      - NETWORK_LEVEL=${NETWORK_LEVE}
+      - BOOTNODE=${BOOTNODE}
+      - PRIVATE_KEY_1=${PRIVATE_KEY_1}
+      - NODE_NUM=1
+      - ETH_STATS_REGION=${ETH_STATS_REGION}
+      # - PRIVATE_KEY_2=0df9054384c57a61746aa80351b9d8140ed8599f8b45bca7c28c105959f02af8
+    entrypoint: ['/bin/bash', 'devnet/run-docker.sh']
+    ports:
+      - "30303:30303"
+      - "8555:8555" # WS
+      - "8545:8545"
+  
+  master-node-2:
+    image: ${DOCKER_HUB}:${DOCKER_TAG}
+    volumes:
+      - ${PWD}/nodes:/XDCchain/nodes
+      - ${PWD}/devnet:/XDCchain/devnet
+      - ${PWD}/genesis:/XDCchain/genesis
+    environment:
+      - NETWORK_LEVEL=${NETWORK_LEVEL}
+      - BOOTNODE=${BOOTNODE}
+      - PRIVATE_KEY_2=${PRIVATE_KEY_2}
+      - NODE_NUM=2
+      - ETH_STATS_REGION=${ETH_STATS_REGION}
+    entrypoint: ['/bin/bash', 'devnet/run-docker.sh']
+    ports:
+      - "30304:30304"
+      - "8556:8556" # WS
+      - "8546:8546"
