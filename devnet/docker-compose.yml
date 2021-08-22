@@ -7,7 +7,7 @@ services:
       - ${PWD}/devnet:/XDCchain/devnet
       - ${PWD}/genesis:/XDCchain/genesis
     environment:
-      - NETWORK_LEVEL=${NETWORK_LEVE}
+      - NETWORK_LEVEL=${NETWORK_LEVEL}
       - BOOTNODE=${BOOTNODE}
       - PRIVATE_KEY_1=${PRIVATE_KEY_1}
       - NODE_NUM=1

@@ -82,12 +82,10 @@ echo "Starting the nodes ... $NODE_NUM"
   --rpcport "${RPC_PORT}" \
   --rpcvhosts "*" \
   --unlock "${wallet}" \
-  --password .pwd_$NODE_NUM \
+  --password ./.pwd_$NODE_NUM \
   --mine \
   --gasprice "${GASPRICE}" \
   --targetgaslimit "420000000" \
   --verbosity ${VERBOSITY} \
   --rpcapi admin,db,eth,debug,miner,net,shh,txpool,personal,web3,XDPoS \
   --ethstats "${ETH_STATS_REGION}-${NODE_NUM}:xinfin_xdpos_hybrid_network_stats@devnetstats.apothem.network:2000"
-
-wait # Do not exit the bash process
