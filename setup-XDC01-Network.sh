@@ -2,9 +2,9 @@
 
 # Auther :- Anil Chinchawale
 # AutherEmailID :- anil@xinfin.org
-# Setup XDC01 blockchain with single script
+# Setup XDC Network blockchain with single script
 
-echo "[*] Init XinFin DPoS Network"
+echo "[*] Init XinFin XDC Network"
 
 echo "[*] Please enter Project/Network name :- "
 read project_name
