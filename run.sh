@@ -16,7 +16,7 @@ PROJECT_DIR="/root/XinFin/XDPoSChain"
 cd $PROJECT_DIR && make XDC && make bootnode
 cd $WORK_DIR
 
-if [ ! -d ./nodes/1/$Bin_NAME/chaindata ]
+if [ ! -d ./nodes/1/keystore ]
 then
   wallet1=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/1 <(echo ${PRIVATE_KEY_1}) | awk -v FS="({|})" '{print $2}')
   wallet2=$(${PROJECT_DIR}/build/bin/$Bin_NAME account import --password .pwd --datadir ./nodes/2 <(echo ${PRIVATE_KEY_2}) | awk -v FS="({|})" '{print $2}')
