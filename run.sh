@@ -32,7 +32,7 @@ fi
 
 VERBOSITY=3
 GASPRICE="1"
-networkid=51
+networkid=551
 INSTANCE_IP=$(curl https://checkip.amazonaws.com)
 
 
